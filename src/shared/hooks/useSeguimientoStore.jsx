@@ -21,8 +21,8 @@ export const useSeguimientoStore = create((set, get) => ({
     obtenerSugerencias: async () => {
         try {
             const [dedicaciones, tamanos, comportamientos] = await Promise.allSettled([
-                axios.get(`${API_BASE_URL}/dedicaciones`).catch(() => ({ data: { dedicaciones: [] } })),
-                axios.get(`${API_BASE_URL}/tamanos-empresa`).catch(() => ({ data: { tamanos: [] } })),
+                axios.get(`${API_BASE_URL}/seguimientos/dedicaciones`).catch(() => ({ data: { dedicaciones: [] } })),
+                axios.get(`${API_BASE_URL}/seguimientos/tamanos-empresa`).catch(() => ({ data: { tamanos: [] } })),
                 axios.get(`${API_BASE_URL}/seguimientos/comportamientos-compra`).catch(() => ({ data: { comportamientos: [] } }))
             ]);
 
