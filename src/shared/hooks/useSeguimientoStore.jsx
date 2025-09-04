@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import axios from "axios";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:2900";
-const API_PREFIX = "/AgendaCIA/v1";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 
 export const useSeguimientoStore = create((set, get) => ({
     isLoading: false,
@@ -21,9 +21,9 @@ export const useSeguimientoStore = create((set, get) => ({
     obtenerSugerencias: async () => {
         try {
             const [dedicaciones, tamanos, comportamientos] = await Promise.allSettled([
-                axios.get(`${API_BASE_URL}${API_PREFIX}/dedicaciones`).catch(() => ({ data: { dedicaciones: [] } })),
-                axios.get(`${API_BASE_URL}${API_PREFIX}/tamanos-empresa`).catch(() => ({ data: { tamanos: [] } })),
-                axios.get(`${API_BASE_URL}${API_PREFIX}/comportamientos-compra`).catch(() => ({ data: { comportamientos: [] } }))
+                axios.get(`${API_BASE_URL}/dedicaciones`).catch(() => ({ data: { dedicaciones: [] } })),
+                axios.get(`${API_BASE_URL}/tamanos-empresa`).catch(() => ({ data: { tamanos: [] } })),
+                axios.get(`${API_BASE_URL}/comportamientos-compra`).catch(() => ({ data: { comportamientos: [] } }))
             ]);
 
             set({
@@ -44,7 +44,7 @@ export const useSeguimientoStore = create((set, get) => ({
     createSeguimiento: async (seguimientoInfo) => {
         set({ isLoading: true, error: null });
         try {
-            const response = await axios.post(`${API_BASE_URL}${API_PREFIX}/seguimientos/crear`, seguimientoInfo);
+            const response = await axios.post(`${API_BASE_URL}/seguimientos/crear`, seguimientoInfo);
             
             const nuevoSeguimiento = response.data.seguimiento || response.data;
             
@@ -71,7 +71,7 @@ export const useSeguimientoStore = create((set, get) => ({
     getSeguimientos: async (params = {}) => {
         set({ isLoading: true, error: null });
         try {
-            const response = await axios.get(`${API_BASE_URL}${API_PREFIX}/seguimientos/obtener`, { params });
+            const response = await axios.get(`${API_BASE_URL}/seguimientos/obtener`, { params });
             
             let seguimientos = [];
             if (response.data && response.data.seguimientos) {
@@ -105,7 +105,7 @@ export const useSeguimientoStore = create((set, get) => ({
         set({ isLoading: true, error: null });
         try {
             const response = await axios.put(
-                `${API_BASE_URL}${API_PREFIX}/seguimientos/actualizar/${seguimientoId}`, 
+                `${API_BASE_URL}/seguimientos/actualizar/${seguimientoId}`, 
                 datosActualizados
             );
             
@@ -134,7 +134,7 @@ export const useSeguimientoStore = create((set, get) => ({
     deleteSeguimiento: async (seguimientoId) => {
         set({ isLoading: true, error: null });
         try {
-            await axios.delete(`${API_BASE_URL}${API_PREFIX}/seguimientos/eliminar/${seguimientoId}`, {
+            await axios.delete(`${API_BASE_URL}/seguimientos/eliminar/${seguimientoId}`, {
                 data: { confirm: true }
             });
             
@@ -158,7 +158,7 @@ export const useSeguimientoStore = create((set, get) => ({
     buscarPorEmpresa: async (nombreEmpresa) => {
         set({ isLoading: true, error: null });
         try {
-            const response = await axios.get(`${API_BASE_URL}${API_PREFIX}/seguimientos/buscar/empresa`, {
+            const response = await axios.get(`${API_BASE_URL}/seguimientos/buscar/empresa`, {
                 params: { nombre: nombreEmpresa }
             });
             
@@ -186,7 +186,7 @@ export const useSeguimientoStore = create((set, get) => ({
     buscarPorDedicacion: async (dedicacion) => {
         set({ isLoading: true, error: null });
         try {
-            const response = await axios.get(`${API_BASE_URL}${API_PREFIX}/seguimientos/buscar/dedicacion`, {
+            const response = await axios.get(`${API_BASE_URL}/seguimientos/buscar/dedicacion`, {
                 params: { dedicacion }
             });
             
@@ -218,7 +218,7 @@ export const useSeguimientoStore = create((set, get) => ({
     getSeguimientoById: async (id) => {
         set({ isLoading: true, error: null });
         try {
-            const response = await axios.get(`${API_BASE_URL}${API_PREFIX}/seguimientos/obtener/${id}`);
+            const response = await axios.get(`${API_BASE_URL}/seguimientos/obtener/${id}`);
             set({ isLoading: false });
             return response.data;
         } catch (error) {
@@ -233,7 +233,7 @@ export const useSeguimientoStore = create((set, get) => ({
     set({ isLoading: true, error: null });
     try {
         const response = await axios.post(
-            `${API_BASE_URL}${API_PREFIX}/seguimientos/${seguimientoId}/visitas`,
+            `${API_BASE_URL}/seguimientos/${seguimientoId}/visitas`,
             visitaData
         );
         
@@ -263,7 +263,7 @@ export const useSeguimientoStore = create((set, get) => ({
         set({ isLoading: true, error: null });
         try {
             const response = await axios.put(
-                `${API_BASE_URL}${API_PREFIX}/seguimientos/${seguimientoId}/visitas/${visitaId}`,
+                `${API_BASE_URL}/seguimientos/${seguimientoId}/visitas/${visitaId}`,
                 visitaData
             );
             
@@ -291,7 +291,7 @@ export const useSeguimientoStore = create((set, get) => ({
         set({ isLoading: true, error: null });
         try {
             const response = await axios.delete(
-                `${API_BASE_URL}${API_PREFIX}/seguimientos/${seguimientoId}/visitas/${visitaId}`
+                `${API_BASE_URL}/seguimientos/${seguimientoId}/visitas/${visitaId}`
             );
             
             const seguimientoActualizado = response.data.seguimiento || response.data;
@@ -318,7 +318,7 @@ export const useSeguimientoStore = create((set, get) => ({
         set({ isLoading: true, error: null });
         try {
             const response = await axios.get(
-                `${API_BASE_URL}${API_PREFIX}/seguimientos/visitas/estado`,
+                `${API_BASE_URL}/seguimientos/visitas/estado`,
                 { params: { estado } }
             );
             
